@@ -8,6 +8,10 @@ A_COUNT = 1
 B_COUNT = 1
 SIMULATION_TIME = 5000
 
+OPTIMISE_FOR_A = True
+OPTIMISE_FOR_B = False
+
+
 
 class Simulation:
     A_COUNT = 1
@@ -21,36 +25,23 @@ class Simulation:
 
     @staticmethod
     def gen_rand_line(length, dims=2):
-        """
-        Create a line using a random walk algorithm
 
-        length is the number of points for the line.
-        dims is the number of dimensions the line has.
-        """
         lineData = np.empty((dims, length))
         lineData[:, 0] = np.random.rand(dims)
         for index in range(1, length):
-            # scaling the random numbers by 0.1 so
-            # movement is small compared to position.
-            # subtraction by 0.5 is to change the range to [-0.5, 0.5]
-            # to allow a line to move backwards.
             step = ((np.random.rand(dims) - 0.5) * 0.1)
             lineData[:, index] = lineData[:, index - 1] + step
 
         return lineData
 
-    # def simulate_algorithm(self):
-
 
     def update_lines(self, num, dataLines, lines):
         for line, data in zip(lines, dataLines):
-            # NOTE: there is no .set_data() for 3 dim data...
             line.set_data(data[0:2, :num])
             line.set_3d_properties(data[2, :num])
         return lines
 
     def simulate(self):
-        # Attaching 3D axis to the figure
         fig = plt.figure()
         ax = p3.Axes3D(fig)
 
@@ -71,7 +62,7 @@ class Simulation:
         ax.set_zlim3d([0.0, 2.0])
         ax.set_zlabel('Z')
 
-        ax.set_title('3D Test')
+        ax.set_title('Catch me if you can')
 
         # Creating the Animation object
         line_ani = animation.FuncAnimation(fig, self.update_lines, 500, fargs=(data, lines),
